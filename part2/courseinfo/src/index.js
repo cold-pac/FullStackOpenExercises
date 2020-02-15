@@ -4,11 +4,10 @@ import ReactDOM from 'react-dom'
 const Header = props =>
   <h1>{props.course}</h1>
 
-/* const Total = props => {
-  const total = props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises
-
-  return <p>Total number of exercises {total}</p>
-} */ 
+const Total = props => {
+  const total = props.parts.map(elem => elem.exercises).reduce((a,b) => a + b)
+  return <b>Total of {total} exercises</b>
+}  
   
 
 const Part = props =>
@@ -52,7 +51,10 @@ const App = () => {
   } 
 
   return (
-    <Course name = {course.name} parts = {course.parts}/> 
+    <div> 
+      <Course name = {course.name} parts = {course.parts}/> 
+      <Total parts = {course.parts}/> 
+    </div> 
   )
 }
 
