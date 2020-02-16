@@ -1,5 +1,44 @@
 import React, { useState } from 'react'
 
+const Filter = props => {
+    return (
+        <div>
+            Filter shown with <input value = {props.inputValue} onChange = {props.inputHandleChange}/> 
+        </div>
+    )
+}
+
+const PersonForm = props => {
+    console.log(props)
+
+    const handleNameChange = event => {
+        props.toAlterName(event.target.value)
+    }
+
+    const handleNumberChange = event => {
+        props.toAlterNumber(event.target.value)
+    }
+    return (
+    <form onSubmit = {props.submitter}>
+            <div> name: <input onChange = {handleNameChange} value = {props.name}  /> </div>
+            <div> number: <input onChange = {handleNumberChange} value = {props.number}  /> </div>
+            <div>
+            <button type="submit">add</button>
+            </div>
+      </form>
+    )
+}
+
+const Persons = props => {
+   
+    return  (
+    <>
+        {props.persons.filter(elem => (elem.name.includes(props.searchTerm) || elem.name.toLowerCase().includes(props.searchTerm))).map(elem => <p key = {elem.name}>{elem.name} {elem.number}</p>)}
+    </>
+    )
+    
+}
+
 const App = () => {
   const [ persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '040-123456' },
@@ -15,14 +54,6 @@ const App = () => {
 
   const handleSearch = event => {
       setSearchTerm(event.target.value)
-  }
-
-  const handleNameChange = event => {
-      setNewName(event.target.value)
-  }
-
-  const handleNumberChange = event => {
-      setNewNumber(event.target.value)
   }
 
   const addName = event => {
@@ -43,19 +74,11 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-          Filter shown with <input value = {searchTerm} onChange = {handleSearch}/> 
-      </div>
-      <h2>add a new</h2>
-      <form onSubmit = {addName}>
-        <div> name: <input value = {newName} onChange = {handleNameChange} /> </div>
-        <div> number <input value = {newNumber} onChange = {handleNumberChange} /> </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      {persons.filter(elem => (elem.name.includes(searchTerm) || elem.name.toLowerCase().includes(searchTerm))).map(elem => <p key = {elem.name}>{elem.name} {elem.number}</p>)}
+      <Filter inputValue = {searchTerm} inputHandleChange = {handleSearch}/> 
+      <h3>add a new</h3>
+      <PersonForm submitter = {addName} name = {newName} number = {newNumber} toAlterName = {setNewName} toAlterNumber = {setNewNumber}/> 
+      <h3>Numbers</h3>
+      <Persons persons = {persons} searchTerm = {searchTerm}/> 
     </div>
   )
 }
