@@ -43,13 +43,13 @@ const App = () => {
                     {console.log(countryContainer[0].languages[0])}
                     <h2>languages</h2>
                     <ul>
-                        {countryContainer[0].languages.map(elem => <li>{elem.name}</li>)}
+                        {countryContainer[0].languages.map(elem => <li key = {elem.nativeName}>{elem.name}</li>)}
                     </ul>
                     <img alt="flag" src = {countryContainer[0].flag} />
                 </div>
             )
         } else if (countryContainer.length <= 10) {
-            return countryContainer.map((elem,index) => <div key = {index}>{elem.name}</div>);
+            return countryContainer.map((elem,index) => <div key = {index}>{elem.name} <button onClick = {function () {setSearchTerm(elem.name); yourSearch(searchTerm);}}>show</button></div>);
         } else  { 
             return "Too many matches, specify another filter";
         }
